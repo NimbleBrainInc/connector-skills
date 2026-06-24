@@ -8,14 +8,14 @@ These overlays exist for connectors we **don't control** (Composio toolkits, thi
 
 ## Layout — `<identity>/SKILL.md`
 
-The runtime resolves an overlay by **connector identity**:
+The runtime resolves an overlay by **connector identity** — a flat connector slug (the Composio toolkit name, or the remote-MCP connector's slug):
 
 | Connector kind | Identity | Path |
 |---|---|---|
-| Composio toolkit | `composio/<toolkit>` | `composio/gmail/SKILL.md` |
+| Composio toolkit | `<toolkit>` | `gmail/SKILL.md` |
 | Other third-party (remote MCP) | the connector slug | `notion/SKILL.md` |
 
-A connector with no overlay here is a no-op (no guidance injected) — coverage grows over time.
+Slugs are unique across both kinds, so the namespace stays flat. A connector with no overlay here is a no-op (no guidance injected) — coverage grows over time.
 
 ## Overlay format
 
@@ -33,7 +33,7 @@ You are using the **Gmail** connector...
 ```
 
 Conventions:
-- **`name`** must be lowercase letters/digits with single hyphens (e.g. `microsoft-teams`, even though the path is `composio/microsoft_teams/`).
+- **`name`** must be lowercase letters/digits with single hyphens (e.g. `microsoft-teams`, even though the path/slug is `microsoft_teams/`).
 - **`description`** says what the connector does *and when to use it* — it's the activation signal.
 - **Body** is tool-use guidance only: tool conventions, common workflows, gotchas, when-to-use. No secrets. Keep it tight (a per-skill body cap applies at load) — push depth into the description, not a wall of prose.
 
