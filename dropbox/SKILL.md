@@ -30,10 +30,9 @@ connected user's Dropbox account. Apply this guidance whenever you touch Dropbox
   first page is the whole folder.
 - **GetFileMetadata** reads properties (size, dates, MIME type, id) for a single
   item; **GetUsageAndQuota** reports storage used vs. available, in bytes.
-- **Numeric arguments are integers, not strings.** Depth, result-count, and page-size
-  limits (a search's `max_results`, a recursive listing's `max_depth`) must be passed
-  as numbers (`10`), not quoted strings (`"10"`), or the call is rejected as a type
-  error.
+- **Numeric arguments are integers, not strings.** Result-count, depth, and page-size
+  limits must be passed as numbers (`10`), not quoted strings (`"10"`), or the call is
+  rejected as a type error.
 
 ## Reading content
 
