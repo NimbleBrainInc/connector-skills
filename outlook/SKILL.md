@@ -40,6 +40,11 @@ this guidance whenever you touch Outlook.
   the intent is unambiguous.
 - Bodies can be plain text or HTML — set the HTML flag when you're sending formatted
   content, and quote sparingly rather than pasting the whole prior thread back.
+- **Recipients are lists.** `to_recipients`, `cc_recipients`, and `bcc_recipients`
+  are arrays of plain email-address strings — even for a single recipient:
+  `to_recipients: ["jane@example.com"]`, never a bare `"jane@example.com"`. Forwarding
+  needs addresses Exchange can resolve; an unresolvable or malformed address fails the
+  whole send.
 
 ## Filing and folders
 
@@ -70,3 +75,6 @@ this guidance whenever you touch Outlook.
   capability isn't available as a tool, say so rather than inventing a tool name.
 - Large mailboxes: page through results with a limit rather than requesting
   everything, and summarize.
+- **Space out bulk sends.** Rapid back-to-back writes (drafts, sends, forwards) trip
+  Microsoft's mailbox concurrency limit and fail with a throttling error; serialize the
+  calls and back off rather than retrying immediately.
