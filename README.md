@@ -19,7 +19,7 @@ Slugs are unique across both kinds, so the namespace stays flat. A connector wit
 
 ## Overlay format
 
-Each `SKILL.md` is a **standard [Agent Skill](https://agentskills.io)** — YAML frontmatter (`name`, `description`) + a markdown body. **Do not** add a `metadata.nimblebrain` block: the runtime stamps the NimbleBrain config (`loading-strategy: dynamic`, `tool-affinity`, `scope`, provenance) when it materializes the overlay. Keep the source pristine and portable.
+Each `SKILL.md` is a **standard [Agent Skill](https://agentskills.io)** — YAML frontmatter (`name`, `description`) + a markdown body. The runtime stamps the rest of the NimbleBrain config (`loading-strategy: dynamic`, `scope`, provenance) when it materializes the overlay, so leave those out and keep the source portable.
 
 ```markdown
 ---
@@ -31,6 +31,31 @@ description: >-
 
 You are using the **Gmail** connector...
 ```
+
+### Optional: `metadata.nimblebrain.tool-affinity`
+
+By default an overlay is bound to **every** tool of its connector, so it surfaces on the first call to any of them. To bind it to specific tools instead, declare them under `metadata.nimblebrain.tool-affinity`. This is the only field an overlay may set in that block.
+
+```yaml
+---
+name: example-mail
+description: How to send and draft email with the example connector. Use when sending or drafting.
+metadata:
+  nimblebrain:
+    tool-affinity:
+      - send_email
+      - create_draft
+      - reply_*
+---
+```
+
+- List the connector's **bare** tool names or globs (`*` matches any run of characters), exactly as the connector names them. Do not add a server prefix: the runtime does not know the name a connector is installed under until install, so it prefixes each pattern with that install's namespace itself.
+- A pattern can only match the connector's own tools. `*` means all of them, which is the same as omitting the field.
+- Omit the field, or set it to `[]`, and the overlay is bound to all of the connector's tools.
+- The value must be a YAML list. A blank `tool-affinity:` or a single string fails validation, and the runtime drops the whole overlay.
+- A pattern that matches none of the tools the connector advertises is logged as a warning when the connector connects. Check spelling against the connector's tool list.
+
+Requires the NimbleBrain runtime release that includes [NimbleBrainInc/nimblebrain#1467](https://github.com/NimbleBrainInc/nimblebrain/issues/1467). An earlier runtime rejects a `metadata.nimblebrain` block that has no `loading-strategy`, which drops the overlay. The runtime pins a tag of this repo (see Versioning), so do not cut a tag that contains an overlay declaring `tool-affinity` until every runtime that will pin that tag includes that release.
 
 Conventions:
 - **`name`** must be lowercase letters/digits with single hyphens (e.g. `microsoft-teams`, even though the path/slug is `microsoft_teams/`).
