@@ -51,10 +51,11 @@ metadata:
 
 - List the connector's **bare** tool names or globs (`*` matches any run of characters), exactly as the connector names them. Do not add a server prefix: the runtime does not know the name a connector is installed under until install, so it prefixes each pattern with that install's namespace itself.
 - A pattern can only match the connector's own tools. `*` means all of them, which is the same as omitting the field.
-- Omit the field, or leave it empty, and the overlay is bound to all of the connector's tools.
+- Omit the field, or set it to `[]`, and the overlay is bound to all of the connector's tools.
+- The value must be a YAML list. A blank `tool-affinity:` or a single string fails validation, and the runtime drops the whole overlay.
 - A pattern that matches none of the tools the connector advertises is logged as a warning when the connector connects. Check spelling against the connector's tool list.
 
-Requires the NimbleBrain runtime release that includes [NimbleBrainInc/nimblebrain#1467](https://github.com/NimbleBrainInc/nimblebrain/issues/1467). An earlier runtime rejects a `metadata.nimblebrain` block that has no `loading-strategy`, which drops the overlay, so do not add `tool-affinity` to an overlay until the pinned runtime has that release.
+Requires the NimbleBrain runtime release that includes [NimbleBrainInc/nimblebrain#1467](https://github.com/NimbleBrainInc/nimblebrain/issues/1467). An earlier runtime rejects a `metadata.nimblebrain` block that has no `loading-strategy`, which drops the overlay. The runtime pins a tag of this repo (see Versioning), so do not cut a tag that contains an overlay declaring `tool-affinity` until every runtime that will pin that tag includes that release.
 
 Conventions:
 - **`name`** must be lowercase letters/digits with single hyphens (e.g. `microsoft-teams`, even though the path/slug is `microsoft_teams/`).
