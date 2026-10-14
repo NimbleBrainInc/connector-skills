@@ -55,10 +55,10 @@ That returns one row per vendor, and `totalCount` counts vendors, not bills.
 - `count` needs a field: `count:id`, never `count`.
 - Some objects add currency as an extra group key on monetary aggregates, so a
   multi-currency company gets one row per currency even when you asked for a single
-  total. The object's hints say when this applies. A top-N ranking then lists a
-  vendor once per currency, so N rows can hold fewer than N vendors: rank within each
-  currency. Don't cap such a total with `size: 1`, and never add amounts in
-  different currencies together.
+  total. The object's hints say when this applies. Don't cap such a total with
+  `size: 1`, and never add amounts in different currencies together. A top-N ranking
+  lists a vendor once per currency, so N rows can hold fewer than N vendors: rank
+  within each currency.
 
 ## Filters, paging, and checking
 
