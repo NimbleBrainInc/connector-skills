@@ -55,8 +55,10 @@ That returns one row per vendor, and `totalCount` counts vendors, not bills.
 - `count` needs a field: `count:id`, never `count`.
 - Some objects add currency as an extra group key on monetary aggregates, so a
   multi-currency company gets one row per currency even when you asked for a single
-  total. The object's hints say when this applies. Don't cap such a total with
-  `size: 1`, and never add amounts in different currencies together.
+  total. The object's hints say when this applies. A top-N ranking then lists a
+  vendor once per currency, so N rows can hold fewer than N vendors: rank within each
+  currency. Don't cap such a total with `size: 1`, and never add amounts in
+  different currencies together.
 
 ## Filters, paging, and checking
 
@@ -65,8 +67,8 @@ That returns one row per vendor, and `totalCount` counts vendors, not bills.
   use `filterExpression` only when you need OR or grouping. Date macros such as
   `currentMonth` go with `$eq`; they are not `$between` bounds.
 - `size` is at most 100, and `start` begins at 1. A response with `hasMore: true`
-  gives the next `start` in `next`. For a top-N question, sort and set `size`; you
-  don't need to page.
+  gives the next `start` in `next`. For a top-N question with N up to 100, sort and
+  set `size`; past 100, page.
 - If you're unsure a query is valid, run it with `dryRun: true`. That validates the
   fields, filters, orderBy, and paging without running the query.
 
