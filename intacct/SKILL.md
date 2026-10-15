@@ -104,7 +104,9 @@ totaling them. Before you report a period total, a P&L, or budget-to-actual:
 - **Tie one figure to its subledger before trusting the rest.** For example, an
   expense account in the GL against `accounts-payable/bill-line` filtered on the
   same `glAccount.id` and `bill.postingDate` range. A GL total that is a clean
-  multiple of the subledger's means a journal is counted twice.
+  multiple of the subledger's is a warning, not proof: independent GL postings can
+  produce the same ratio. Break the account down by journal and confirm the same
+  postings appear twice before excluding a journal or module.
 - **Account groups are many-to-many.** `general-ledger/account-group-map` lists an
   account once per group it belongs to, so joining amounts through it multiplies
   them. Use one designated group per account, or the account's `category`.
